@@ -8,7 +8,7 @@
 #ifndef COMMON_H
 #define COMON_H
 
-#define PACKAGE_CAPACITY 25
+#define PACKAGE_CAPACITY 50 
 #define GOODS_MAX_KIND 100
 
 typedef struct Goods

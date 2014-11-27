@@ -14,14 +14,15 @@ int getGoodsInformation(Goods *goods[])
 {
     int n = 0;
     int i = 0;
+    int ret;
 
     printf("Please input goods total number:");
-    scanf("%d", &n);
-    while(n > GOODS_MAX_KIND || n <= 0)
+    ret = scanf("%d", &n);
+    while(n > GOODS_MAX_KIND || n <= 0 || ret != 1)
     {
         printf("Illegal total number!!\n");
         printf("Please input goods total number:");
-        scanf("%d", &n);
+        ret = scanf("%d", &n);
     }
 
     for(i = 0; i < n; i++)
@@ -32,8 +33,8 @@ int getGoodsInformation(Goods *goods[])
         
         temp -> No = i+1;
         printf("Please input %dst goods' weight and value:", i+1);
-        scanf("%f%f", &(temp->Weight),&(temp->Value));
-        if(temp->Weight <= 0.0 || temp -> Value <= 0.0)
+        ret = scanf("%f%f", &(temp->Weight),&(temp->Value));
+        if(temp->Weight <= 0.0 || temp -> Value <= 0.0 || ret != 2)
         {
             printf("Wrong input!!\n");
             i--;
@@ -74,12 +75,16 @@ void sortByPrice(Goods *goods[], int realNum)
 int printResult(float fill[][2], int fillNum)
 {
     int i = 0;
+    float totalVal = 0;
     
     printf("The order is: [No, Weight]\n");
     for(i = 0; i < fillNum; i++)
     {
-        printf("[%d, %f] ", (int)fill[i][0], fill[i][1]);
+        printf("[%d, %.2f] ", (int)fill[i][0], fill[i][1]);
+        totalVal += fill[i][0] * fill[0][1];
     }
+    printf("\n");
+    printf("Total value is %.2f\n", totalVal);
 
     return 0;
 }
