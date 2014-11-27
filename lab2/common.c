@@ -71,7 +71,7 @@ void sortByPrice(Goods *goods[], int realNum)
 }
 
 // Output the result
-void printResult(float **fill, int fillNum)
+int printResult(float fill[][2], int fillNum)
 {
     int i = 0;
     
@@ -81,6 +81,6 @@ void printResult(float **fill, int fillNum)
         printf("[%d, %f] ", (int)fill[i][0], fill[i][1]);
     }
 
-    return;
+    return 0;
 }
 

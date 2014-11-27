@@ -35,13 +35,12 @@ int greedy(float W, Goods *goods[], int realNum, float fill[][2])
     return count;
 }
 
-void main()
+int main()
 {
-    int i = 0;
     int realNum = 0;
     int fillNum = 0;
     float W = PACKAGE_CAPACITY;
-    float fill[GOODS_MAX_KIND][2] = {0.0};
+    float fill[GOODS_MAX_KIND][2] = {{0}};
     Goods *goods[GOODS_MAX_KIND] = {NULL};
 
     realNum = getGoodsInformation(goods);
@@ -52,5 +51,5 @@ void main()
     
     printResult(fill, fillNum);
 
-    return;
+    return 0;
 }
