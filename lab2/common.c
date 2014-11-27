@@ -6,6 +6,7 @@
  ************************************************************************/
 
 #include<stdio.h>
+#include <stdlib.h>
 #include"common.h"
 
 // Get goods weight, value from user
@@ -16,20 +17,31 @@ int getGoodsInformation(Goods *goods[])
 
     printf("Please input goods total number:");
     scanf("%d", &n);
-    while(n > GOODS_KIND || n <= 0)
+    while(n > GOODS_MAX_KIND || n <= 0)
     {
         printf("Illegal total number!!\n");
         printf("Please input goods total number:");
-        scanf("%d", &n)
+        scanf("%d", &n);
     }
-
 
     for(i = 0; i < n; i++)
     {
-        goods[i]->No = i+1;
+        Goods *temp = (Goods*)malloc(sizeof(Goods));
+        if(temp == NULL)
+            return -1;
+        
+        temp -> No = i+1;
         printf("Please input %dst goods' weight and value:", i+1);
-        scanf("%f%f", goods[i]->Weight,goods[i]->Value);
-        goods[i]->Price = goods[i]->Value / goods[i]->Weight;
+        scanf("%f%f", &(temp->Weight),&(temp->Value));
+        if(temp->Weight <= 0.0 || temp -> Value <= 0.0)
+        {
+            printf("Wrong input!!\n");
+            i--;
+            continue;
+        }
+        temp->Price = temp->Value / temp->Weight;
+
+        goods[i] = temp;
     }
 
     return n;
@@ -46,7 +58,7 @@ void sortByPrice(Goods *goods[], int realNum)
     {
         for(j = 0; j < realNum-1-i; j++)
         {
-            if(goods[j]->Price < goods->Price[j+1])
+            if(goods[j]->Price < goods[j+1]->Price)
             {
                 temp = goods[j];
                 goods[j] = goods[j+1];
@@ -66,7 +78,7 @@ void printResult(float **fill, int fillNum)
     printf("The order is: [No, Weight]\n");
     for(i = 0; i < fillNum; i++)
     {
-        printf("[%d, %f] ", fill[i][0], fill[i][1]);
+        printf("[%d, %f] ", (int)fill[i][0], fill[i][1]);
     }
 
     return;

@@ -8,7 +8,7 @@
 #include<stdio.h>
 #include"common.h"
 
-int greedy(float W, Goods *goods[], int realNum, float **fill);
+int greedy(float W, Goods *goods[], int realNum, float fill[][2])
 {
     int i = 0;
     int count = 0;
@@ -16,7 +16,7 @@ int greedy(float W, Goods *goods[], int realNum, float **fill);
     for(i = 0; i < realNum;i++)
     {
         // Check how many goods can current packet fill in
-        if(goods[i]->Wight <= W)
+        if(goods[i]->Weight <= W)
         {
             fill[i][0] = goods[i] -> No;
             fill[i][1] = goods[i] -> Weight;
@@ -27,7 +27,7 @@ int greedy(float W, Goods *goods[], int realNum, float **fill);
         {
             fill[i][0] = goods[i] -> No;
             fill[i][1] = W;
-            count++
+            count++;
             return count;
         }
     }
@@ -41,10 +41,10 @@ void main()
     int realNum = 0;
     int fillNum = 0;
     float W = PACKAGE_CAPACITY;
-    float fill[GOOD_MAX_KIND][2] = {0.0}
+    float fill[GOODS_MAX_KIND][2] = {0.0};
     Goods *goods[GOODS_MAX_KIND] = {NULL};
 
-    realNum = getGoodsInfomation(goods);
+    realNum = getGoodsInformation(goods);
 
     sortByPrice(goods, realNum);
 
