@@ -22,4 +22,6 @@ typedef struct Goods
 void sortByPrice(Goods *goods[], int realNum);
 int getGoodsInformation(Goods *goods[]);
 int printResult(float fill[][2], int fillNum);
+int printTotal(Goods *goods[], float fill[][2], int fillNum);
+
 #endif //COMMON_H

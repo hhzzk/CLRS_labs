@@ -51,5 +51,7 @@ int main()
     
     printResult(fill, fillNum);
 
+    printTotal(goods, fill, fillNum);
+
     return 0;
 }

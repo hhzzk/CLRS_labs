@@ -75,16 +75,49 @@ void sortByPrice(Goods *goods[], int realNum)
 int printResult(float fill[][2], int fillNum)
 {
     int i = 0;
-    float totalVal = 0;
-    
-    printf("The order is: [No, Weight]\n");
+
+    printf("The order is: [No. , Weight]\n");
     for(i = 0; i < fillNum; i++)
     {
-        printf("[%d, %.2f] ", (int)fill[i][0], fill[i][1]);
-        totalVal += fill[i][0] * fill[0][1];
+        printf("[%d, %.2f] ",(int)fill[i][0], fill[i][1]);
     }
     printf("\n");
-    printf("Total value is %.2f\n", totalVal);
+
+    return 0;
+}
+
+// Output total value
+int printTotal(Goods *goods[], float fill[][2], int fillNum)
+{
+    int i = 0;
+    int No = 0;
+    int j = 0;
+    float Total = 0;
+
+    for(i = 0; i < fillNum; i++)
+    {
+        No = (int)fill[i][0];
+        while(j < GOODS_MAX_KIND)
+        {
+            if(goods[j]->No == No)
+            {
+                if(goods[j]->Weight == fill[i][1])
+                {
+                    Total += goods[j]->Value;
+                }
+                else
+                {
+                    Total += goods[j]->Price * fill[i][1];
+                }
+                j = 0;
+                break;
+            }
+            else 
+                j++;
+        }
+    }
+
+    printf("Total value is %.2f\n", Total);
 
     return 0;
 }
