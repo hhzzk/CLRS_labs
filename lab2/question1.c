@@ -18,7 +18,7 @@ int maxValue(Goods *goods[], int bagCap, int goodsNum)
     int maxVal = 0;
     int weight = 0;
     
-    if(gMaxValue[bagCap][goodsNum] != -1)
+    if(gMaxValue[bagCap][goodsNum] != 0)
         return gMaxValue[bagCap][goodsNum];
 
     if(goodsNum <= 0)
@@ -52,6 +52,26 @@ int maxValue(Goods *goods[], int bagCap, int goodsNum)
     return maxVal;
 }
 
+getGoods(Goods *goods[], int flag[], int goodsNum)
+{
+    int i = PACKAGE_CAPACITY;
+    int j = goodsNum;
+
+    while(gMaxValue[i][j] != 0)
+    {
+        if(gMaxValue[i][j]-goods[j-1]->Value == gMaxValue[i-(int)goods[j-1]->Weight][j-1])
+        {
+            flag[j] = 1;
+            i = i-goods[j-1]->Weight;
+            j = j - 1;
+        }
+        else
+        {
+            j = j-1;
+        }
+    }
+}
+
 int main()
 {
     int i = 0;
@@ -59,12 +79,13 @@ int main()
     int realNum = 0;
     int maxVal = 0;
     float W = PACKAGE_CAPACITY;
+    int flag[GOODS_MAX_KIND+1] = {0};
     Goods *goods[GOODS_MAX_KIND] = {NULL};
 
     for(i=0; i <= W; i++ )
     {
         for(j=0; j<=GOODS_MAX_KIND; j++)
-            gMaxValue[i][j] = -1;
+            gMaxValue[i][j] = 0;
     }
 
     realNum = getGoodsInformation(goods);
@@ -72,6 +93,16 @@ int main()
    // sortByPrice(goods, realNum);
 
     maxVal = maxValue(goods, W, realNum);
+    
+    getGoods(goods, flag, realNum);
+    
+    for(i=0; i<GOODS_MAX_KIND+1;i++)
+    {
+        if(flag[i] == 1)
+            printf("%d ,", i);
+    }
+    printf("\n");
+
     printf("The total is %d\n",maxVal);
 
     return 0;
