@@ -8,70 +8,71 @@
 #include<stdio.h>
 #include"common.h"
 
-// Record goods which was filled in
-static int gFill[GOODS_MAX_KIND] = {0};
-static int gCount = -1;
+// Record goods max value 
+static int gMaxValue[PACKAGE_CAPACITY+1][GOODS_MAX_KIND+1];
 
-int maxValue(int W, Goods *goods[],int start, int end)
+int maxValue(Goods *goods[], int bagCap, int goodsNum)
 {
     int value1 = 0;
     int value2 = 0;
+    int maxVal = 0;
     int weight = 0;
+    
+    if(gMaxValue[bagCap][goodsNum] != -1)
+        return gMaxValue[bagCap][goodsNum];
 
-    // Bag is full
-    if(W <= 0 || start > end)
+    if(goodsNum <= 0)
         return 0;
-
-    weight = goods[start]->Weight;
-
-    // The lastest goods
-    if(start == end && W >= weight)
+    // Only one goods
+    if(goodsNum == 1)
     {
-        return goods[end]->Value;
+        if(bagCap >= goods[goodsNum-1] -> Weight)
+            maxVal = goods[goodsNum-1] -> Value;
     }
-
-    // Goods can not put in to the bag 
-    if(W < weight)
-    {
-        return maxValue(W, goods, start+1, end);
-    }
-    // Judge the max value
     else
     {
-        value1 = goods[start]->Value + maxValue(W-weight, goods, start+1, end);
-        value2 = maxValue(W, goods, start+1, end);
-        
-        if(value1 >= value2)
-        {
-            gFill[++gCount] = start+1;
-            return value1;
-        }
-        return value2;
-    }
+        weight = goods[goodsNum-1]->Weight;
 
-    return 0;
+        // Goods can not put in to the bag 
+        if(bagCap < weight)
+        {
+            maxVal = maxValue(goods, bagCap, goodsNum-1);
+        }
+        // Judge the max value
+        else
+        {
+            value1 = goods[goodsNum-1]->Value + maxValue(goods, bagCap-weight, goodsNum-1);
+            value2 = maxValue(goods, bagCap, goodsNum-1);
+        
+            maxVal = value1 > value2 ? value1 : value2;
+        }
+    }
+    gMaxValue[bagCap][goodsNum] = maxVal;
+
+    return maxVal;
 }
 
 int main()
 {
     int i = 0;
+    int j = 0;
     int realNum = 0;
-    int fillNum = 0;
+    int maxVal = 0;
     float W = PACKAGE_CAPACITY;
     Goods *goods[GOODS_MAX_KIND] = {NULL};
+
+    for(i=0; i <= W; i++ )
+    {
+        for(j=0; j<=GOODS_MAX_KIND; j++)
+            gMaxValue[i][j] = -1;
+    }
 
     realNum = getGoodsInformation(goods);
 
    // sortByPrice(goods, realNum);
 
-    fillNum = maxValue(W, goods, 0, realNum-1);
-    printf("The total is %d\n",fillNum);
-    
-    for(i = 0; i<=gCount;i++)
-    {
-        printf("%d ",gFill[i]);
-    }
-    printf("\n");
+    maxVal = maxValue(goods, W, realNum);
+    printf("The total is %d\n",maxVal);
 
     return 0;
 }
