@@ -9,7 +9,7 @@
 #include<stdlib.h>
 #include<time.h>
 
-#define COUNT 1000000
+#define COUNT 100000
 
 int Array1[COUNT] = {0};
 int Array2[COUNT] = {0};
@@ -96,7 +96,12 @@ main()
         value = rand()%COUNT;
         Array1[i] = value;
         Array2[i] = value;
+     
+     //   Array1[i] = i;
+     //   Array2[i] = i;
     }
+
+    printf("The array count is %d\n", COUNT);
 
     // Print 10 number before sort
     printf("Before sort: \n");
