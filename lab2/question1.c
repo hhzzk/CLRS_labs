@@ -52,7 +52,8 @@ int maxValue(Goods *goods[], int bagCap, int goodsNum)
     return maxVal;
 }
 
-getGoods(Goods *goods[], int flag[], int goodsNum)
+// Get the selected goods
+int getGoods(Goods *goods[], int flag[], int goodsNum)
 {
     int i = PACKAGE_CAPACITY;
     int j = goodsNum;
@@ -70,6 +71,8 @@ getGoods(Goods *goods[], int flag[], int goodsNum)
             j = j-1;
         }
     }
+
+    return 0;
 }
 
 int main()
