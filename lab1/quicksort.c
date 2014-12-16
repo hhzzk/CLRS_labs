@@ -9,7 +9,7 @@
 #include<stdlib.h>
 #include<time.h>
 
-#define COUNT 100000
+#define COUNT 400000
 
 int Array1[COUNT] = {0};
 int Array2[COUNT] = {0};
