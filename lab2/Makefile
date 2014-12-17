@@ -25,4 +25,4 @@ clean_o:
 	rm -rf *.o
 
 clean:
-	rm -rf question2 question1
+	rm -rf question2 question1 question3
