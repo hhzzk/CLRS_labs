@@ -6,6 +6,7 @@
  ************************************************************************/
 
 #include<stdio.h>
+#include<string.h>
 
 #define TASK_COUNT 7
 #define MAX_DEADLINE 6
@@ -53,7 +54,7 @@ void sortByWeight()
 {
     int i = 0;
     int j = 0;
-    task temp = {};
+    task temp = {0};
 
     for(i = 0; i < TASK_COUNT-1; i++)
     {
@@ -116,7 +117,7 @@ int greedy()
     return count;
 }
 
-void print()
+void print(int totalWeight)
 {
     int i = 0;
 
@@ -148,16 +149,26 @@ void print()
     }
     printf("\n");
 
+    printf("Total punishment is %d\n", totalWeight);
+
     return;
 }
 
 void main()
 {
     int count = 0;
+    int totalWeight = 0;
+    int i = 0;
 
     count = greedy();
     sortByDeadline(count);
-    print();
+
+    for(i = count; i < TASK_COUNT; i++)
+    {
+        totalWeight += tasks[A[i]].weight;
+    }
+
+    print(totalWeight);
 
     return;
 }
