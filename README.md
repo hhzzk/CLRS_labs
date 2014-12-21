@@ -1,9 +1,9 @@
 CLRS_labs
 =========
-
+<pre>
 Related labs of CLRS
+Four labs are included, the requirement are followed.
 
-Four labs are include, the requirement are followed.
 Lab1:快速排序
 问题描述：
         实现对数组的普通快速排序与随机快速排序
@@ -36,3 +36,4 @@ Treap树(课本P178)
       （1）实现基本操作（初始化、插入、删除）
       （2）比较算法之间的时间、空间性能
 
+</pre>
