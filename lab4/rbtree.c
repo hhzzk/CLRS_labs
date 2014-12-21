@@ -183,7 +183,7 @@ void rbInsertFixup(rbTree *z)
     return;
 }
 
-void treeInsert(rbTree *z)
+void rbInsert(rbTree *z)
 {
     rbTree *y = gNIL;
     rbTree *x = gT;
@@ -221,6 +221,158 @@ void treeInsert(rbTree *z)
     return;
 }
 
+void rbDeleteFixup(rbTree *x)
+{
+    rbTree *w = NULL;
+
+    if(x = NULL)
+        return;
+
+    while(x != gT && x->color == BLACK)
+    {
+        if(x == x->p->left)
+        {
+            w = x->p->right;
+            if(w->color == RED)
+            {
+                w->color = BLACK;
+                x->p->color = RED;
+                leftRotate(x->p);
+                w = x->p->right;
+            }
+
+            if(w->left->color == BLACK && w->right->color == BLACK)
+            {
+                w->color = RED;
+                x = x->p;
+            }
+            else if(w->right->color == BLACK)
+            {
+                w->left->color = BLACK;
+                w->color = RED;
+                rightRotate(w);
+                w = x->p->right;
+            }
+            w->color = x->p->color;
+            x->p->color = BLACK;
+            w->right->color = BLACK;
+            leftRotate(x->p);
+            x = gT;
+        }
+        else
+        {
+            w = x->p->left;
+            if(w->color == RED)
+            {
+                w->color = BLACK;
+                x->p->color = RED;
+                leftRotate(x->p);
+                w = x->p->left;
+            }
+
+            if(w->right->color == BLACK && w->left->color == BLACK)
+            {
+                w->color = RED;
+                x = x->p;
+            }
+            else if(w->left->color == BLACK)
+            {
+                w->right->color = BLACK;
+                w->color = RED;
+                leftRotate(w);
+                w = x->p->left;
+            }
+            w->color = x->p->color;
+            x->p->color = BLACK;
+            w->left->color = BLACK;
+            rightRotate(x->p);
+            x = gT;
+        }
+    }
+
+    x->color = BLACK;
+}
+
+rbTree* treeMinmum(rbTree *x)
+{
+    if(x == NULL)
+        return;
+
+    while(x->left != gNIL)
+        x = x->left;
+
+    return x;
+}
+
+void rbTransplant(rbTree *u, rbTree *v)
+{
+    if(u == NULL || v ==NULL)
+        return;
+
+    if(u->p == gNIL)
+        gT = v;
+    else if(u == u->p->left)
+        u->p->left = v;
+    else
+    {
+        u->p->left == v;
+        v->p = u->p;
+    }
+
+    return;
+}
+
+// Delete node z from tree
+void rbDelete(rbTree *z)
+{
+    rbTree *y = NULL;
+    rbTree *x = NULL;
+    int yOriCol = 0;
+
+    if(z == NULL)
+        return;
+    
+    y = z;
+    yOriCol = y->color;
+    if(z->left == gNIL)
+    {
+        x = z->right;
+        rbTransplant(z, z->left);
+    }
+    else if(z->right == gNIL)
+    {
+        x = z->left;
+        rbTransplant(z, z->left);
+    }
+    else
+    {
+        y = treeMinmum(z->right);
+        yOriCol = y->color;
+        x = y->right;
+        if(y->p == z)
+        {
+            x->p = y;
+        }
+        else
+        {
+            rbTransplant(y, y->right);
+            y->right = z->right;
+            y->right->p = y;
+        }
+        rbTransplant(y, y->right);
+        y->left = z->left;
+        y->left->p = y;
+        y->color = z->color;
+    }
+
+    if(yOriCol == BLACK)
+    {
+        rbDeleteFixup(x);
+    }
+
+    return;
+}
+
 void visit(rbTree *x)
 {
     if(x == gNIL)
@@ -238,6 +390,13 @@ void main()
     int keys[COUNT] = {11, 2, 14, 1, 7, 15, 5, 8, 4};
     int i = 0;
 
+    printf("Insert sort is: ");
+    for(i = 0; i < COUNT; i++)
+    {
+        printf("%d ", keys[i]);
+    }
+    printf("\n");
+
     treeInit();
     for(i = 0; i < COUNT; i++)
     {
@@ -245,9 +404,15 @@ void main()
         if(node == NULL)
             return;
 
-        treeInsert(node);
+        rbInsert(node);
     }
     
+    printf("Afer Insert: ");
+    visit(gT);
+    printf("\n");
+
+    rbDelete(node);
+    printf("Delete node 4: ");
     visit(gT);
     printf("\n");
 
