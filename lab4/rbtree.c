@@ -141,19 +141,19 @@ void rbInsertFixup(rbTree *z)
                 z->p->p->color = RED;
                 z = z->p->p;
             }
-            else if(z == z->p->right)
+            else 
             {
-                z = z->p;
-                leftRotate(z);
-            }
-            else
-            {
+                if(z == z->p->right)
+                {
+                    z = z->p;
+                    leftRotate(z);
+                }
                 z->p->color = BLACK;
                 z->p->p->color = RED;
                 rightRotate(z->p->p);
             }
         }
-        else
+        else if(z->p == z->p->p->right)
         {
              y = z->p->p->left;
 
@@ -164,13 +164,13 @@ void rbInsertFixup(rbTree *z)
                 z->p->p->color = RED;
                 z = z->p->p;
             }
-            else if(z == z->p->right)
+            else 
             {
-                z = z->p;
-                rightRotate(z);
-            }
-            else
-            {
+                if(z == z->p->right)
+                {
+                    z = z->p;
+                    rightRotate(z);
+                }
                 z->p->color = BLACK;
                 z->p->p->color = RED;
                 leftRotate(z->p->p);
