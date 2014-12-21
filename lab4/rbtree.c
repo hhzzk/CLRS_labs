@@ -48,11 +48,11 @@ void treeInit()
 {   
     // Generate NIL node
     gNIL = (rbTree*)malloc(sizeof(rbTree));
-    if(gNIL = NULL)
+    if(gNIL == NULL)
         return;
     
     gNIL->color = BLACK;
-    gNIL->key   = 0;
+    gNIL->key   = -1;
     gNIL->left  = NULL;
     gNIL->right = NULL;
     gNIL->p     = NULL;
@@ -81,10 +81,10 @@ void rightRotate(rbTree *x)
 
     if(x->p == gNIL)
         gT = y;
-    else if(x == x->p->right)
-        x->p->right = y;
-    else
+    else if(x == x->p->left)
         x->p->left = y;
+    else
+        x->p->right = y;
 
     y->right = x;
     x->p = y;
@@ -99,7 +99,7 @@ void leftRotate(rbTree *x)
     if(x == NULL)
         return;
 
-    y = x->left;
+    y = x->right;
     x->right = y->left;
 
     if(y->left != gNIL)
@@ -164,7 +164,7 @@ void rbInsertFixup(rbTree *z)
                 z->p->p->color = RED;
                 z = z->p->p;
             }
-            else if(z == z->p->left)
+            else if(z == z->p->right)
             {
                 z = z->p;
                 rightRotate(z);
@@ -221,10 +221,21 @@ void treeInsert(rbTree *z)
     return;
 }
 
+void visit(rbTree *x)
+{
+    if(x == gNIL)
+        return;
+    visit(x->left);
+    printf("%d[%d] ",x->key, x->color);
+    visit(x->right);
+
+    return;
+}
+
 void main()
 {
     rbTree *node = NULL;
-    int keys[COUNT] = {1, 2, 5, 4, 8, 7, 11, 14, 15};
+    int keys[COUNT] = {11, 2, 14, 1, 7, 15, 5, 8, 4};
     int i = 0;
 
     treeInit();
@@ -236,6 +247,9 @@ void main()
 
         treeInsert(node);
     }
+    
+    visit(gT);
+    printf("\n");
 
     return;
 }
