@@ -1,7 +1,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 
-#define COUNT 11
+#define COUNT 10
 
 typedef struct avlTree
 {
@@ -14,7 +14,7 @@ typedef struct avlTree
 avlTree* createNode(int key)
 {
 	avlTree* p = malloc(sizeof(avlTree));
-    if(p = NULL)
+    if(p == NULL)
         return NULL;
 
 	p->key = key;
@@ -45,6 +45,7 @@ avlTree* rrRotate(avlTree* node)
 	temp->right = node;
 	node->height = max(Height(node->left), Height(node->right)) + 1;
 	temp->height = max(Height(temp->left), node->height) + 1;
+
 	return temp;
 }
 
@@ -55,18 +56,21 @@ avlTree* llRotate(avlTree* node)
 	temp->left = node;
 	node->height = max(Height(node->left), Height(node->right)) + 1;
 	temp->height = max(Height(temp->right), node->height) + 1;
+
 	return temp;
 }
 
 avlTree* lrRotate(avlTree* node)
 {
 	node->left = llRotate(node->left);
+
 	return rrRotate(node);
 }
 
 avlTree* rlRotate(avlTree* node)
 {
 	node->right = rrRotate(node->right);
+
 	return llRotate(node);
 }
 
@@ -74,7 +78,7 @@ avlTree* rlRotate(avlTree* node)
 avlTree* avlInsert(avlTree *node, avlTree* newNode)
 {
     if(newNode == NULL)
-        return;
+        return NULL;
 
 	if(node == NULL)
     {
@@ -102,6 +106,7 @@ avlTree* avlInsert(avlTree *node, avlTree* newNode)
 		else
 			node = llRotate(node);
 	}
+
 	return node;
 }
 
@@ -160,11 +165,13 @@ avlTree* avlDelete(avlTree *node, int key)
 
 void visit(avlTree* node)
 {
+    int height = 0;
     if(node == NULL)
         return;
 
 	visit(node->left);
-	printf("%d[%d] ", node->key, node->height);
+    height = Height(node->left)-Height(node->right);
+	printf("%d[%d] ", node->key, height);
 	visit(node->right);
 	
     return;
@@ -175,7 +182,7 @@ void main(int argc, char* argv[])
     int i = 0;
     avlTree* root = NULL;
     avlTree *node = NULL;
-	int keys[] = {13,6,19,3,8,16,20,1,5,10};
+	int keys[] = {12,6,19,3,8,16,20,1,5,10};
 
 	for(i = 0; i< COUNT;i++)
     {
@@ -185,20 +192,21 @@ void main(int argc, char* argv[])
 		root = avlInsert(root, node);
     }
 
-    printf("Insert order: ");
+    printf("Insert order: \n");
     for(i = 0; i < COUNT; i++)
     {
         printf("%d ", keys[i]);
     }
     printf("\n");
     
-    printf("After Insert: ");
+    printf("After Insert([l->height - r->height]): \n");
     visit(root);
     printf("\n");
 
     root = avlDelete(root, 10);
-    printf("After delete 10:");
+    printf("After delete 10: \n");
     visit(root);
+    printf("\n");
 
 	return;
 }

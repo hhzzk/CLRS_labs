@@ -27,7 +27,7 @@ rbTree *gNIL = NULL;
 rbTree *gT = NULL;
 
 // Generate a red-black tree node
-rbTree *createNode(key, color)
+rbTree *createNode(int key, int color)
 {
     rbTree *node = NULL;
 
@@ -390,7 +390,7 @@ void main()
     int keys[COUNT] = {11, 2, 14, 1, 7, 15, 5, 8, 4};
     int i = 0;
 
-    printf("Insert sort is: ");
+    printf("Insert order : \n");
     for(i = 0; i < COUNT; i++)
     {
         printf("%d ", keys[i]);
@@ -407,12 +407,12 @@ void main()
         rbInsert(node);
     }
     
-    printf("Afer Insert: ");
+    printf("Afer Insert(0 = black; 1 = red): \n");
     visit(gT);
     printf("\n");
 
     rbDelete(node);
-    printf("Delete node 4: ");
+    printf("Delete node 4: \n");
     visit(gT);
     printf("\n");
 
