@@ -154,15 +154,31 @@ void print(int totalWeight)
     return;
 }
 
+int maxWeight()
+{
+    int max = 0;
+    int i = 0;
+
+    for(i = 0; i < TASK_COUNT; i++ )
+    {
+        if(max < tasks[i].weight)
+            max = tasks[i].weight;
+    }
+
+    return max;
+}
+
 void main()
 {
     int count = 0;
     int totalWeight = 0;
     int i = 0;
+    int maxW = 0;
 
+    maxW = maxWeight();
     for(i = 0; i < TASK_COUNT; i++)
     {
-        tasks[i].weight = 80 - tasks[i].weight;
+        tasks[i].weight = maxW - tasks[i].weight;
     }
 
     count = greedy();
